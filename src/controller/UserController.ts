@@ -20,5 +20,6 @@ export class UserController {
   async remove(request: Request, response: Response, next: NextFunction) {
     let userToRemove = await this.userRepository.findOne(request.params.id)
     await this.userRepository.remove(userToRemove)
+    return this.userRepository.find()
   }
 }
