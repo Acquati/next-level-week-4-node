@@ -8,7 +8,7 @@
   "migrationsRun": true,
   "dropSchema": false,
   "synchronize": false,
-  "logging": false,
+  "logging": true,
   "entities": [
     "src/entity/**/*.ts"
   ],

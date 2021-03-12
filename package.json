@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Next Level Week 4 Trilha Node.",
   "dependencies": {
+    "class-validator": "^0.13.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^4.4.1",
