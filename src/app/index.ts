@@ -1,6 +1,6 @@
-import * as express from 'express'
-import * as cors from 'cors'
-import * as helmet from 'helmet'
+import express from 'express'
+import cors from 'cors'
+import helmet from 'helmet'
 import routes from '../routes'
 
 // Create a new express application instance
