@@ -5,7 +5,9 @@
   "username": "test",
   "password": "test",
   "database": "test",
-  "synchronize": true,
+  "migrationsRun": false,
+  "dropSchema": false,
+  "synchronize": false,
   "logging": false,
   "entities": [
     "src/entity/**/*.ts"
