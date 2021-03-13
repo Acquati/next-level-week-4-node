@@ -1,15 +1,16 @@
 import { NextFunction, Request, Response } from 'express'
-import { getRepository } from 'typeorm'
+import { getCustomRepository } from 'typeorm'
 import { validate, isUUID } from 'class-validator'
 import { User } from '../entities/User'
+import { UsersRepository } from '../repositories/UsersRepository'
 
 export class UserController {
   static listAll = async (request: Request, response: Response, next: NextFunction) => {
-    const userRepository = getRepository(User)
+    const usersRepository = getCustomRepository(UsersRepository)
     let users: User[]
 
     try {
-      users = await userRepository.find()
+      users = await usersRepository.find()
     } catch (error) {
       return response.status(500).json({ message: error })
     }
@@ -22,7 +23,7 @@ export class UserController {
   }
 
   static getOneById = async (request: Request, response: Response, next: NextFunction) => {
-    const userRepository = getRepository(User)
+    const usersRepository = getCustomRepository(UsersRepository)
     const id = request.params.id
 
     if (!isUUID(id)) {
@@ -30,7 +31,7 @@ export class UserController {
     }
 
     try {
-      const user = await userRepository.findOneOrFail(id)
+      const user = await usersRepository.findOneOrFail(id)
       return response.status(200).json(user)
     } catch (error) {
       return response.status(404).json({ message: 'No user found. ' + error })
@@ -38,12 +39,12 @@ export class UserController {
   }
 
   static create = async (request: Request, response: Response, next: NextFunction) => {
-    const userRepository = getRepository(User)
+    const usersRepository = getCustomRepository(UsersRepository)
     const { name, email } = request.body
     let userAlreadyExists: User
 
     try {
-      userAlreadyExists = await userRepository.findOne({ email })
+      userAlreadyExists = await usersRepository.findOne({ email })
     } catch (error) {
       return response.status(500).json({ message: error })
     }
@@ -52,7 +53,7 @@ export class UserController {
       return response.status(400).json({ message: 'Email already in use.' })
     }
 
-    const user = userRepository.create({
+    const user = usersRepository.create({
       name,
       email
     })
@@ -63,7 +64,7 @@ export class UserController {
     }
 
     try {
-      await userRepository.save(user)
+      await usersRepository.save(user)
     } catch (error) {
       return response.status(500).json({ message: error })
     }
@@ -72,7 +73,7 @@ export class UserController {
   }
 
   static delete = async (request: Request, response: Response, next: NextFunction) => {
-    const userRepository = getRepository(User)
+    const usersRepository = getCustomRepository(UsersRepository)
     const id = request.params.id
 
     if (!isUUID(id)) {
@@ -80,13 +81,13 @@ export class UserController {
     }
 
     try {
-      await userRepository.findOneOrFail(id)
+      await usersRepository.findOneOrFail(id)
     } catch (error) {
       return response.status(404).json({ message: 'No user found. ' + error })
     }
 
     try {
-      await userRepository.delete(id)
+      await usersRepository.delete(id)
     } catch (error) {
       return response.status(500).json({ message: error })
     }
