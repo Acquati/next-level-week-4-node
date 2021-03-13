@@ -4,7 +4,7 @@ import { validate, isUUID } from 'class-validator'
 import { User } from '../entities/User'
 import { UsersRepository } from '../repositories/UsersRepository'
 
-export class UserController {
+export class UsersController {
   static listAll = async (request: Request, response: Response, next: NextFunction) => {
     const usersRepository = getCustomRepository(UsersRepository)
     let users: User[]
