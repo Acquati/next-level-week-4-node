@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import user from './user'
+import users from './users'
 
 const routes = Router()
 
-routes.use('/users', user)
+routes.use('/users', users)
 
 export default routes

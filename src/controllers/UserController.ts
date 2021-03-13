@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { getRepository } from 'typeorm'
 import { validate, isUUID } from 'class-validator'
-import { User } from '../entity/User'
+import { User } from '../entities/User'
 
 export class UserController {
   static listAll = async (request: Request, response: Response, next: NextFunction) => {
