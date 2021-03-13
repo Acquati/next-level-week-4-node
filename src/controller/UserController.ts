@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { getRepository } from 'typeorm'
-import { isUUID } from 'class-validator'
+import { validate, isUUID } from 'class-validator'
 import { User } from '../entity/User'
 
 export class UserController {
@@ -56,6 +56,11 @@ export class UserController {
       name,
       email
     })
+
+    const errors = await validate(user)
+    if (errors.length > 0) {
+      return response.status(400).json(errors)
+    }
 
     try {
       await userRepository.save(user)
