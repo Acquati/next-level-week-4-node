@@ -1,10 +1,13 @@
 version: "3"
 services:
-  postgres:
-    image: "postgres:9.6.1"
+  db:
+    container_name: "next_level_week_4_node"
+    image: "postgres:11.5-alpine"
     ports:
       - "5432:5432"
+    volumes:
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
     environment:
-      POSTGRES_USER: "test"
-      POSTGRES_PASSWORD: "test"
-      POSTGRES_DB: "test"
+      - POSTGRES_USER=test_user
+      - POSTGRES_PASSWORD=test_password
+      - POSTGRES_MULTIPLE_DATABASES=production,test
