@@ -42,6 +42,6 @@ export class SurveysController {
       return response.status(500).json({ message: error })
     }
 
-    return response.status(200).json({ message: 'Survey created successfully.' })
+    return response.status(201).json({ message: 'Survey created successfully.' })
   }
 }
