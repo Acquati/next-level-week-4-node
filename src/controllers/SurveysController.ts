@@ -2,8 +2,26 @@ import { NextFunction, Request, Response } from 'express'
 import { getCustomRepository } from 'typeorm'
 import { validate } from 'class-validator'
 import { SurveysRepository } from '../repositories/SurveysRepository'
+import { Survey } from '../entities/Survey'
 
 export class SurveysController {
+  static listAll = async (request: Request, response: Response, next: NextFunction) => {
+    const surveysRepository = getCustomRepository(SurveysRepository)
+    let surveys: Survey[]
+
+    try {
+      surveys = await surveysRepository.find()
+    } catch (error) {
+      return response.status(500).json({ message: error })
+    }
+
+    if (surveys.length === 0) {
+      return response.status(404).json({ message: 'No survey found.' })
+    }
+
+    return response.status(200).json(surveys)
+  }
+
   static create = async (request: Request, response: Response, next: NextFunction) => {
     const surveysRepository = getCustomRepository(SurveysRepository)
     const { title, description } = request.body

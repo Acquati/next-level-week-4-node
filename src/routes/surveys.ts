@@ -3,9 +3,13 @@ import { SurveysController } from '../controllers/SurveysController'
 
 const router = Router()
 
-//Create a new survey
+router.get(
+  '/',
+  SurveysController.listAll
+)
 router.post(
   '/',
   SurveysController.create
 )
+
 export default router
