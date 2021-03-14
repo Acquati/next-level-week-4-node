@@ -12,11 +12,11 @@ export default async (): Promise<Connection> => {
       migrationsRun:
         process.env.NODE_ENV === 'test'
           ? false
-          : defaultOptions.database,
+          : defaultOptions.migrationsRun,
       logging:
         process.env.NODE_ENV === 'test'
-          ? false
-          : defaultOptions.database
+          ? true
+          : defaultOptions.logging
     })
   )
 }

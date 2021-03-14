@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { Connection, createConnection, getConnection, Migration } from 'typeorm'
+import { Connection, createConnection, Migration } from 'typeorm'
 import { app } from '../app'
 
 describe('Users', function () {
@@ -9,15 +9,11 @@ describe('Users', function () {
   beforeAll(async () => {
     try {
       connection = await createConnection()
-    } catch (error) {
-      console.log(error)
-    }
+    } catch (error) { console.log(error) }
 
     try {
       migrations = await connection.runMigrations()
-    } catch (error) {
-      console.log(error)
-    }
+    } catch (error) { console.log(error) }
 
     console.log('beforeAll')
   })
@@ -31,16 +27,17 @@ describe('Users', function () {
   })
 
   afterAll(async () => {
-    const mainConnection = getConnection()
-
-    for (const migration of migrations) {
-      await connection.undoLastMigration()
+    for (const _migration of migrations) {
+      try {
+        await connection.undoLastMigration()
+      } catch (error) { console.log(error) }
     }
 
     console.log('afterAll')
 
-    await connection.close()
-    await mainConnection.close()
+    try {
+      await connection.close()
+    } catch (error) { console.log(error) }
   })
 
   it('Should be able to create a new user.', function (done) {
@@ -60,40 +57,3 @@ describe('Users', function () {
       .catch(error => done(error))
   })
 })
-
-// describe('Users', () => {
-//   beforeAll(async () => {
-//     let connection
-
-//     try {
-//       connection = await createConnection()
-//     } catch (error) {
-//       console.log(error)
-//     }
-
-//     try {
-//       await connection.runMigrations()
-//     } catch (error) {
-//       console.log(error)
-//     }
-//     await connection.runMigrations()
-//   })
-
-//   it('Should be able to create a new user.', async () => {
-//     const response = await request(app).post('/users').send({
-//       name: 'User Example',
-//       email: 'user@example.com'
-//     })
-
-//     expect(response.status).toBe(201)
-//   })
-
-//   it('Should not be able to create a user with the same email.', async () => {
-//     const response = await request(app).post('/users').send({
-//       name: 'User Example',
-//       email: 'user@example.com'
-//     })
-
-//     expect(response.status).toBe(400)
-//   })
-// })
