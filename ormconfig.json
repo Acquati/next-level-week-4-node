@@ -5,7 +5,7 @@
   "username": "test_user",
   "password": "test_password",
   "database": "production",
-  "migrationsRun": true,
+  "migrationsRun": false,
   "dropSchema": false,
   "synchronize": false,
   "logging": true,
