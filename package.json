@@ -30,6 +30,6 @@
     "start": "ts-node src/index.ts",
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
-    "test": "jest --verbose --detectOpenHandles --runInBand"
+    "test": "NODE_ENV=test jest --verbose --detectOpenHandles --runInBand"
   }
 }

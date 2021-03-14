@@ -1,5 +1,6 @@
 import request from 'supertest'
-import { Connection, createConnection, Migration } from 'typeorm'
+import { Connection, Migration } from 'typeorm'
+import createConnection from '../database'
 import { app } from '../app'
 
 describe('Users', function () {
@@ -14,16 +15,6 @@ describe('Users', function () {
     try {
       migrations = await connection.runMigrations()
     } catch (error) { console.log(error) }
-
-    console.log('beforeAll')
-  })
-
-  beforeEach(() => {
-    console.log('beforeEach')
-  })
-
-  afterEach(() => {
-    console.log('afterEach')
   })
 
   afterAll(async () => {
@@ -32,8 +23,6 @@ describe('Users', function () {
         await connection.undoLastMigration()
       } catch (error) { console.log(error) }
     }
-
-    console.log('afterAll')
 
     try {
       await connection.close()

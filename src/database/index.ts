@@ -15,7 +15,7 @@ export default async (): Promise<Connection> => {
           : defaultOptions.migrationsRun,
       logging:
         process.env.NODE_ENV === 'test'
-          ? true
+          ? false
           : defaultOptions.logging
     })
   )
