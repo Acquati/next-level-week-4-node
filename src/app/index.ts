@@ -1,11 +1,8 @@
 import 'reflect-metadata'
 import express from 'express'
-import createConnection from '../database'
 import cors from 'cors'
 import helmet from 'helmet'
 import routes from '../routes'
-
-createConnection()
 
 // Create a new express application instance
 const app = express()
