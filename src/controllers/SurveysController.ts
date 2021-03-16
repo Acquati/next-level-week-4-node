@@ -5,7 +5,7 @@ import { SurveysRepository } from '../repositories/SurveysRepository'
 import { Survey } from '../entities/Survey'
 
 export class SurveysController {
-  static listAll = async (request: Request, response: Response, next: NextFunction) => {
+  static listAll = async (_request: Request, response: Response, _next: NextFunction) => {
     const surveysRepository = getCustomRepository(SurveysRepository)
     let surveys: Survey[]
 
@@ -22,7 +22,7 @@ export class SurveysController {
     return response.status(200).json(surveys)
   }
 
-  static create = async (request: Request, response: Response, next: NextFunction) => {
+  static create = async (request: Request, response: Response, _next: NextFunction) => {
     const surveysRepository = getCustomRepository(SurveysRepository)
     const { title, description } = request.body
 

@@ -5,7 +5,7 @@ import { User } from '../entities/User'
 import { UsersRepository } from '../repositories/UsersRepository'
 
 export class UsersController {
-  static listAll = async (request: Request, response: Response, next: NextFunction) => {
+  static listAll = async (_request: Request, response: Response, _next: NextFunction) => {
     const usersRepository = getCustomRepository(UsersRepository)
     let users: User[]
 
@@ -22,7 +22,7 @@ export class UsersController {
     return response.status(200).json(users)
   }
 
-  static getOneById = async (request: Request, response: Response, next: NextFunction) => {
+  static getOneById = async (request: Request, response: Response, _next: NextFunction) => {
     const usersRepository = getCustomRepository(UsersRepository)
     const id = request.params.id
 
@@ -38,7 +38,7 @@ export class UsersController {
     }
   }
 
-  static create = async (request: Request, response: Response, next: NextFunction) => {
+  static create = async (request: Request, response: Response, _next: NextFunction) => {
     const usersRepository = getCustomRepository(UsersRepository)
     const { name, email } = request.body
     let userAlreadyExists: User
@@ -72,7 +72,7 @@ export class UsersController {
     return response.status(201).json({ message: 'User created successfully.' })
   }
 
-  static delete = async (request: Request, response: Response, next: NextFunction) => {
+  static delete = async (request: Request, response: Response, _next: NextFunction) => {
     const usersRepository = getCustomRepository(UsersRepository)
     const id = request.params.id
 
