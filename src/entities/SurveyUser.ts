@@ -1,21 +1,24 @@
-import { IsString, Length } from 'class-validator'
+import { IsInt, IsOptional, IsUUID } from 'class-validator'
 import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 
-@Entity('surveys')
-export class Survey {
+@Entity('surveys_users')
+export class SurveyUser {
   @PrimaryColumn()
   readonly id: string
 
   @Column()
-  @IsString()
-  @Length(1, 300)
-  title: string
+  @IsUUID()
+  user_id: string
 
   @Column()
-  @IsString()
-  @Length(1, 1000)
-  description: string
+  @IsUUID()
+  survey_id: string
+
+  @Column()
+  @IsOptional()
+  @IsInt()
+  value: number
 
   @CreateDateColumn()
   created_at: Date

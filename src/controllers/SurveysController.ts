@@ -16,7 +16,7 @@ export class SurveysController {
     }
 
     if (surveys.length === 0) {
-      return response.status(404).json({ message: 'No survey found.' })
+      return response.status(400).json({ message: 'Survey does not exists.' })
     }
 
     return response.status(200).json(surveys)

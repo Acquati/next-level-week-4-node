@@ -16,7 +16,7 @@ export class UsersController {
     }
 
     if (users.length === 0) {
-      return response.status(404).json({ message: 'No user found.' })
+      return response.status(400).json({ message: 'User does not exists.' })
     }
 
     return response.status(200).json(users)
@@ -34,7 +34,7 @@ export class UsersController {
       const user = await usersRepository.findOneOrFail(id)
       return response.status(200).json(user)
     } catch (error) {
-      return response.status(404).json({ message: 'No user found. ' + error })
+      return response.status(400).json({ message: 'User does not exists.' })
     }
   }
 
@@ -83,7 +83,7 @@ export class UsersController {
     try {
       await usersRepository.findOneOrFail(id)
     } catch (error) {
-      return response.status(404).json({ message: 'No user found. ' + error })
+      return response.status(400).json({ message: 'User does not exists.' })
     }
 
     try {
