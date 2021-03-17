@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, IsUUID } from 'class-validator'
+import { IsInt, IsOptional, IsUUID, Max, Min } from 'class-validator'
 import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -18,6 +18,8 @@ export class SurveyUser {
   @Column()
   @IsOptional()
   @IsInt()
+  @Min(0)
+  @Max(10)
   value: number
 
   @CreateDateColumn()

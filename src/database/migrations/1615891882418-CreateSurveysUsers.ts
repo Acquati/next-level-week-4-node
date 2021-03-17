@@ -21,7 +21,7 @@ export class CreateSurveysUsers1615891882418 implements MigrationInterface {
           },
           {
             name: 'value',
-            type: 'integer',
+            type: 'smallint',
             isNullable: true
           },
           {

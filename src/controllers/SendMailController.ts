@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import { getCustomRepository } from 'typeorm'
 import { isUUID, validate } from 'class-validator'
-import { SurveysRepository } from '../repositories/SurveysRepository'
 import { UsersRepository } from '../repositories/UsersRepository'
+import { SurveysRepository } from '../repositories/SurveysRepository'
 import { SurveysUsersRepository } from '../repositories/SurveysUsersRepository'
 import { User } from '../entities/User'
+import { Survey } from '../entities/Survey'
+import SendMailService from '../services/SendMailService'
 
 export class SendMailController {
   static execute = async (request: Request, response: Response, next: NextFunction) => {
@@ -13,6 +15,7 @@ export class SendMailController {
     const surveysUsersRepository = getCustomRepository(SurveysUsersRepository)
     const { email, survey_id } = request.body
     let user: User
+    let survey: Survey
 
     if (!isUUID(survey_id)) {
       return response.status(400).json({ message: 'Invalid input syntax for UUID.' })
@@ -25,7 +28,7 @@ export class SendMailController {
     }
 
     try {
-      await surveysRepository.findOneOrFail({ id: survey_id })
+      survey = await surveysRepository.findOneOrFail({ id: survey_id })
     } catch (error) {
       return response.status(400).json({ message: 'Survey does not exists.' })
     }
@@ -42,6 +45,12 @@ export class SendMailController {
 
     try {
       await surveysUsersRepository.save(surveyUser)
+    } catch (error) {
+      return response.status(500).json({ message: error })
+    }
+
+    try {
+      await SendMailService.execute(email, survey.title, survey.description)
     } catch (error) {
       return response.status(500).json({ message: error })
     }
