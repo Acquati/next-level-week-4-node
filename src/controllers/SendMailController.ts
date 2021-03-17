@@ -38,7 +38,8 @@ export class SendMailController {
 
     try {
       surveyUserAlredyExists = await surveysUsersRepository.findOne({
-        where: [{ user_id: user.id }, { value: null }]
+        where: [{ user_id: user.id }, { value: null }],
+        relations: ['user', 'survey']
       })
     } catch (error) {
       return response.status(500).json({ message: error })

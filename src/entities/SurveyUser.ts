@@ -1,6 +1,8 @@
 import { IsInt, IsOptional, IsUUID, Max, Min } from 'class-validator'
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from 'typeorm'
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
+import { User } from './User'
+import { Survey } from './Survey'
 
 @Entity('surveys_users')
 export class SurveyUser {
@@ -11,9 +13,17 @@ export class SurveyUser {
   @IsUUID()
   user_id: string
 
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User
+
   @Column()
   @IsUUID()
   survey_id: string
+
+  @ManyToOne(() => Survey)
+  @JoinColumn({ name: 'survey_id' })
+  survey: Survey
 
   @Column()
   @IsOptional()
