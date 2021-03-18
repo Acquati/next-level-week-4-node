@@ -1,13 +1,18 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { getCustomRepository, Not, IsNull } from 'typeorm'
-import { SurveyUser } from '../entities/SurveyUser'
+import { isUUID } from 'class-validator'
 import { SurveysUsersRepository } from '../repositories/SurveysUsersRepository'
+import { SurveyUser } from '../entities/SurveyUser'
 
 export class NpsController {
   static execute = async (request: Request, response: Response, _next: NextFunction) => {
-    const { survey_id } = request.params
     const surveysUsersRepository = getCustomRepository(SurveysUsersRepository)
+    const { survey_id } = request.params
     let surveysUsers: SurveyUser[]
+
+    if (!isUUID(survey_id)) {
+      return response.status(400).json({ error: 'Invalid input syntax for UUID!' })
+    }
 
     try {
       surveysUsers = await surveysUsersRepository.find({
@@ -15,7 +20,7 @@ export class NpsController {
         value: Not(IsNull())
       })
     } catch (error) {
-      return response.status(400).json({ error: 'Survey User does not exists.' })
+      return response.status(400).json({ error: 'Survey User does not exists!' })
     }
 
     const detractors = surveysUsers.filter(

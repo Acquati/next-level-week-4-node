@@ -1,14 +1,14 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { getCustomRepository } from 'typeorm'
 import { isUUID, validate } from 'class-validator'
 import { resolve } from 'path'
 import { UsersRepository } from '../repositories/UsersRepository'
 import { SurveysRepository } from '../repositories/SurveysRepository'
 import { SurveysUsersRepository } from '../repositories/SurveysUsersRepository'
-import SendMailService from '../services/SendMailService'
 import { User } from '../entities/User'
 import { Survey } from '../entities/Survey'
 import { SurveyUser } from '../entities/SurveyUser'
+import SendMailService from '../services/SendMailService'
 
 export class SendMailController {
   static execute = async (request: Request, response: Response, _next: NextFunction) => {
@@ -21,19 +21,19 @@ export class SendMailController {
     let surveyUserAlredyExists: SurveyUser
 
     if (!isUUID(survey_id)) {
-      return response.status(400).json({ error: 'Invalid input syntax for UUID.' })
+      return response.status(400).json({ error: 'Invalid input syntax for UUID!' })
     }
 
     try {
       user = await usersRepository.findOneOrFail({ email })
     } catch (error) {
-      return response.status(400).json({ error: 'User does not exists.' })
+      return response.status(400).json({ error: 'User does not exists!' })
     }
 
     try {
       survey = await surveysRepository.findOneOrFail({ id: survey_id })
     } catch (error) {
-      return response.status(400).json({ error: 'Survey does not exists.' })
+      return response.status(400).json({ error: 'Survey does not exists!' })
     }
 
     const npsPath = resolve(__dirname, '..', 'views', 'emails', 'npsMail.hbs')

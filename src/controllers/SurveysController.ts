@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { getCustomRepository } from 'typeorm'
 import { validate } from 'class-validator'
 import { SurveysRepository } from '../repositories/SurveysRepository'
@@ -16,7 +16,7 @@ export class SurveysController {
     }
 
     if (surveys.length === 0) {
-      return response.status(400).json({ error: 'Survey does not exists.' })
+      return response.status(400).json({ error: 'Survey does not exists!' })
     }
 
     return response.status(200).json({ data: surveys })
