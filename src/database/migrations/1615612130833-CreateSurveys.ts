@@ -23,13 +23,11 @@ export class CreateSurveys1615612130833 implements MigrationInterface {
           },
           {
             name: 'created_at',
-            type: 'timestamp',
-            default: 'now()'
+            type: 'timestamp'
           },
           {
             name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()'
+            type: 'timestamp'
           }
         ]
       })

@@ -25,8 +25,18 @@ export class User {
   updated_at: Date
 
   constructor() {
+    const date = new Date()
+
     if (!this.id) {
       this.id = uuidv4()
+    }
+
+    if (!this.created_at) {
+      this.created_at = date
+    }
+
+    if (!this.updated_at) {
+      this.updated_at = date
     }
   }
 }
