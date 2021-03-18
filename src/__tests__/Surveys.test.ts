@@ -53,8 +53,8 @@ describe('Surveys', function () {
       .expect('Content-Type', /json/)
       .expect(200)
       .then(response => {
-        expect(response.body[0].title).toEqual('Title Example')
-        expect(response.body[0].description).toEqual('Description Example')
+        expect(response.body.data[0].title).toEqual('Title Example')
+        expect(response.body.data[0].description).toEqual('Description Example')
         done()
       })
       .catch(error => done(error))

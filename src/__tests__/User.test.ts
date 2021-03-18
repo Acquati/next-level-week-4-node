@@ -54,9 +54,9 @@ describe('Users', function () {
       .expect('Content-Type', /json/)
       .expect(200)
       .then(response => {
-        expect(response.body[0].email).toEqual('user@example.com')
-        expect(response.body[0].name).toEqual('User Example')
-        userId = response.body[0].id
+        expect(response.body.data[0].email).toEqual('user@example.com')
+        expect(response.body.data[0].name).toEqual('User Example')
+        userId = response.body.data[0].id
         done()
       })
       .catch(error => done(error))
@@ -69,8 +69,8 @@ describe('Users', function () {
       .expect('Content-Type', /json/)
       .expect(200)
       .then(response => {
-        expect(response.body.email).toEqual('user@example.com')
-        expect(response.body.name).toEqual('User Example')
+        expect(response.body.data.email).toEqual('user@example.com')
+        expect(response.body.data.name).toEqual('User Example')
         done()
       })
       .catch(error => done(error))
