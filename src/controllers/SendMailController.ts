@@ -8,6 +8,7 @@ import { SurveysUsersRepository } from '../repositories/SurveysUsersRepository'
 import { User } from '../entities/User'
 import { Survey } from '../entities/Survey'
 import { SurveyUser } from '../entities/SurveyUser'
+// import { AppError } from '../errors/AppError'
 import SendMailService from '../services/SendMailService'
 
 export class SendMailController {
@@ -21,6 +22,7 @@ export class SendMailController {
     let surveyUserAlredyExists: SurveyUser
 
     if (!isUUID(survey_id)) {
+      // throw new AppError('Survey does not exists A!')
       return response.status(400).json({ error: 'Invalid input syntax for UUID!' })
     }
 
