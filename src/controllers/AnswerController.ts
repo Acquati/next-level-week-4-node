@@ -4,7 +4,7 @@ import { SurveyUser } from '../entities/SurveyUser'
 import { SurveysUsersRepository } from '../repositories/SurveysUsersRepository'
 
 export class AnswerController {
-  async execute(request: Request, response: Response, _next: NextFunction) {
+  static execute = async (request: Request, response: Response, _next: NextFunction) => {
     const { value } = request.params
     const { u } = request.query
     const surveysUsersRepository = getCustomRepository(SurveysUsersRepository)
