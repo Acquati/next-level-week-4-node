@@ -19,7 +19,7 @@ export class SendMailController {
     const { email, survey_id } = request.body
     let user: User
     let survey: Survey
-    let surveyUserAlredyExists: SurveyUser
+    let surveyUserAlreadyExists: SurveyUser
 
     if (!isUUID(survey_id)) {
       // throw new AppError('Survey does not exists A!')
@@ -41,7 +41,7 @@ export class SendMailController {
     const npsPath = resolve(__dirname, '..', 'views', 'emails', 'npsMail.hbs')
 
     try {
-      surveyUserAlredyExists = await surveysUsersRepository.findOne({
+      surveyUserAlreadyExists = await surveysUsersRepository.findOne({
         // where: [{ user_id: user.id }, { value: null }], OR ||
         where: { user_id: user.id, value: null }, // AND &&
         relations: ['user', 'survey']
@@ -58,8 +58,8 @@ export class SendMailController {
       link: process.env.URL_MAIL
     }
 
-    if (surveyUserAlredyExists) {
-      variables.id = surveyUserAlredyExists.id
+    if (surveyUserAlreadyExists) {
+      variables.id = surveyUserAlreadyExists.id
 
       try {
         await SendMailService.execute(email, survey.title, variables, npsPath)
@@ -67,7 +67,7 @@ export class SendMailController {
         return response.status(500).json({ error: error })
       }
 
-      return response.status(200).json({ data: surveyUserAlredyExists })
+      return response.status(200).json({ data: surveyUserAlreadyExists })
     }
 
     const surveyUser = surveysUsersRepository.create({

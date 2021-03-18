@@ -10,7 +10,7 @@ import { AppError } from '../errors/AppError'
 // Create a new express application instance
 const app = express()
 
-// Call midlewares
+// Call middleware
 app.use(express.json())
 app.use(cors())
 app.use(helmet())
