@@ -11,7 +11,7 @@ import { Survey } from '../entities/Survey'
 import { SurveyUser } from '../entities/SurveyUser'
 
 export class SendMailController {
-  static execute = async (request: Request, response: Response, next: NextFunction) => {
+  static execute = async (request: Request, response: Response, _next: NextFunction) => {
     const usersRepository = getCustomRepository(UsersRepository)
     const surveysRepository = getCustomRepository(SurveysRepository)
     const surveysUsersRepository = getCustomRepository(SurveysUsersRepository)
@@ -21,48 +21,51 @@ export class SendMailController {
     let surveyUserAlredyExists: SurveyUser
 
     if (!isUUID(survey_id)) {
-      return response.status(400).json({ message: 'Invalid input syntax for UUID.' })
+      return response.status(400).json({ error: 'Invalid input syntax for UUID.' })
     }
 
     try {
       user = await usersRepository.findOneOrFail({ email })
     } catch (error) {
-      return response.status(400).json({ message: 'User does not exists.' })
+      return response.status(400).json({ error: 'User does not exists.' })
     }
 
     try {
       survey = await surveysRepository.findOneOrFail({ id: survey_id })
     } catch (error) {
-      return response.status(400).json({ message: 'Survey does not exists.' })
+      return response.status(400).json({ error: 'Survey does not exists.' })
     }
+
+    const npsPath = resolve(__dirname, '..', 'views', 'emails', 'npsMail.hbs')
 
     try {
       surveyUserAlredyExists = await surveysUsersRepository.findOne({
-        where: [{ user_id: user.id }, { value: null }],
+        // where: [{ user_id: user.id }, { value: null }], OR ||
+        where: { user_id: user.id, value: null }, // AND &&
         relations: ['user', 'survey']
       })
     } catch (error) {
-      return response.status(500).json({ message: error })
+      return response.status(500).json({ error: error })
     }
 
     const variables = {
       name: user.name,
       title: survey.title,
       description: survey.description,
-      user_id: user.id,
+      id: '',
       link: process.env.URL_MAIL
     }
 
-    const npsPath = resolve(__dirname, '..', 'views', 'emails', 'npsMail.hbs')
-
     if (surveyUserAlredyExists) {
+      variables.id = surveyUserAlredyExists.id
+
       try {
         await SendMailService.execute(email, survey.title, variables, npsPath)
       } catch (error) {
-        return response.status(500).json({ message: error })
+        return response.status(500).json({ error: error })
       }
 
-      return response.status(200).json({ message: surveyUserAlredyExists })
+      return response.status(200).json({ data: surveyUserAlredyExists })
     }
 
     const surveyUser = surveysUsersRepository.create({
@@ -72,21 +75,22 @@ export class SendMailController {
 
     const errors = await validate(surveyUser)
     if (errors.length > 0) {
-      return response.status(400).json(errors)
+      return response.status(400).json({ error: errors })
     }
 
     try {
       await surveysUsersRepository.save(surveyUser)
     } catch (error) {
-      return response.status(500).json({ message: error })
+      return response.status(500).json({ error: error })
     }
 
     try {
+      variables.id = surveyUser.id
       await SendMailService.execute(email, survey.title, variables, npsPath)
     } catch (error) {
-      return response.status(500).json({ message: error })
+      return response.status(500).json({ error: error })
     }
 
-    return response.status(200).json({ message: surveyUser })
+    return response.status(200).json({ data: surveyUser })
   }
 }

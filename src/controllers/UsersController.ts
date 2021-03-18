@@ -12,14 +12,14 @@ export class UsersController {
     try {
       users = await usersRepository.find()
     } catch (error) {
-      return response.status(500).json({ message: error })
+      return response.status(500).json({ error: error })
     }
 
     if (users.length === 0) {
-      return response.status(400).json({ message: 'User does not exists.' })
+      return response.status(400).json({ error: 'User does not exists.' })
     }
 
-    return response.status(200).json(users)
+    return response.status(200).json({ data: users })
   }
 
   static getOneById = async (request: Request, response: Response, _next: NextFunction) => {
@@ -27,14 +27,14 @@ export class UsersController {
     const id = request.params.id
 
     if (!isUUID(id)) {
-      return response.status(400).json({ message: 'Invalid input syntax for UUID.' })
+      return response.status(400).json({ error: 'Invalid input syntax for UUID.' })
     }
 
     try {
       const user = await usersRepository.findOneOrFail(id)
-      return response.status(200).json(user)
+      return response.status(200).json({ data: user })
     } catch (error) {
-      return response.status(400).json({ message: 'User does not exists.' })
+      return response.status(400).json({ error: 'User does not exists.' })
     }
   }
 
@@ -46,11 +46,11 @@ export class UsersController {
     try {
       userAlreadyExists = await usersRepository.findOne({ email })
     } catch (error) {
-      return response.status(500).json({ message: error })
+      return response.status(500).json({ error: error })
     }
 
     if (userAlreadyExists) {
-      return response.status(400).json({ message: 'Email already in use.' })
+      return response.status(400).json({ error: 'Email already in use.' })
     }
 
     const user = usersRepository.create({
@@ -60,13 +60,13 @@ export class UsersController {
 
     const errors = await validate(user)
     if (errors.length > 0) {
-      return response.status(400).json(errors)
+      return response.status(400).json({ error: errors })
     }
 
     try {
       await usersRepository.save(user)
     } catch (error) {
-      return response.status(500).json({ message: error })
+      return response.status(500).json({ error: error })
     }
 
     return response.status(201).json({ message: 'User created successfully.' })
@@ -77,19 +77,19 @@ export class UsersController {
     const id = request.params.id
 
     if (!isUUID(id)) {
-      return response.status(400).json({ message: 'Invalid input syntax for UUID.' })
+      return response.status(400).json({ error: 'Invalid input syntax for UUID.' })
     }
 
     try {
       await usersRepository.findOneOrFail(id)
     } catch (error) {
-      return response.status(400).json({ message: 'User does not exists.' })
+      return response.status(400).json({ error: 'User does not exists.' })
     }
 
     try {
       await usersRepository.delete(id)
     } catch (error) {
-      return response.status(500).json({ message: error })
+      return response.status(500).json({ error: error })
     }
 
     return response.status(200).json({ message: 'User successfully deleted.' })

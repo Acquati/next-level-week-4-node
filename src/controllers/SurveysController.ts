@@ -12,14 +12,14 @@ export class SurveysController {
     try {
       surveys = await surveysRepository.find()
     } catch (error) {
-      return response.status(500).json({ message: error })
+      return response.status(500).json({ error: error })
     }
 
     if (surveys.length === 0) {
-      return response.status(400).json({ message: 'Survey does not exists.' })
+      return response.status(400).json({ error: 'Survey does not exists.' })
     }
 
-    return response.status(200).json(surveys)
+    return response.status(200).json({ data: surveys })
   }
 
   static create = async (request: Request, response: Response, _next: NextFunction) => {
@@ -33,13 +33,13 @@ export class SurveysController {
 
     const errors = await validate(survey)
     if (errors.length > 0) {
-      return response.status(400).json(errors)
+      return response.status(400).json({ error: errors })
     }
 
     try {
       await surveysRepository.save(survey)
     } catch (error) {
-      return response.status(500).json({ message: error })
+      return response.status(500).json({ error: error })
     }
 
     return response.status(201).json({ message: 'Survey created successfully.' })
